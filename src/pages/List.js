@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import ListItem from "../components/ListItem";
+import UserList from "../components/UserList";
 
 const List = () => {
   return (
@@ -9,11 +9,7 @@ const List = () => {
       <Navbar />
       <ListWrapper>
         <ListContainer>
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
+          <UserList />
         </ListContainer>
       </ListWrapper>
     </>
