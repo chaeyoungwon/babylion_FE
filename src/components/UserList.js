@@ -18,6 +18,7 @@ const UserList = () => {
           },
         });
         setUsers(response.data);
+        console.log(response.data);
       } catch (error) {
         setError("사용자 리스트 조회에 실패하였습니다.");
       } finally {
@@ -38,6 +39,7 @@ const UserList = () => {
 
   return (
     <UserListContainer>
+      <Title>로그인 한 사람들 조회</Title>
       {users.map((user) => (
         <ListItem key={user.id} user={user} />
       ))}
@@ -55,4 +57,9 @@ const UserListContainer = styled.div`
   background-color: black;
   color: white;
   min-height: 100vh;
+`;
+const Title = styled.h3`
+  color: white;
+  font-weight: 700;
+  margin: 15px 0;
 `;

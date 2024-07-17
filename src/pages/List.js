@@ -31,13 +31,13 @@ const List = () => {
   return (
     <>
       <Navbar />
-      {verify && (
-        <ListWrapper>
+      <ListWrapper>
+        {verify && (
           <ListContainer>
             <UserList />
           </ListContainer>
-        </ListWrapper>
-      )}
+        )}
+      </ListWrapper>
     </>
   );
 };

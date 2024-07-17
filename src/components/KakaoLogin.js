@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import login_button from "./../assets/login_button.png";
 import { axiosInstance } from "../api/api";
+import { useNavigate } from "react-router";
 
 const KakaoLogin = () => {
   const Rest_api_key = process.env.REACT_APP_KAKAO_API_KEY; // REST API KEY
   const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; // Redirect URI
   // Oauth 요청 URL
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&scope=openid`;
-
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 컴포넌트가 마운트될 때 localStorage에서 로그인 상태를 확인합니다.
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
@@ -38,6 +38,7 @@ const KakaoLogin = () => {
       localStorage.removeItem("refreshToken");
       localStorage.setItem("isLoggedIn", "false");
       setIsLoggedIn(false);
+      navigate("/");
     } catch (error) {
       console.error("Logout failed", error);
     }
