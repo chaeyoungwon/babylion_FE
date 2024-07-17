@@ -210,7 +210,7 @@ const EditBtn = styled.button`
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  margin: 0 5px;
+  margin: 10px 5px;
 `;
 
 const Message = styled.span`
