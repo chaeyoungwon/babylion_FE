@@ -12,8 +12,15 @@ const Profile = () => {
   const [description, setDescription] = useState();
   const [age, setAge] = useState();
   const [mbti, setMBTI] = useState("");
-  const [myInfo, setMyInfo] = useState({});
   const [message, setMessage] = useState("");
+
+  const handleIDChange = (e) => {
+    setId(e.target.value);
+  };
+
+  const handleNameChange = (e) => {
+    setNickname(e.target.value);
+  };
 
   const handleAgeChange = (e) => {
     setAge(e.target.value);
@@ -23,9 +30,13 @@ const Profile = () => {
     setMBTI(e.target.value);
   };
 
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
   const verifyJWT = async () => {
     try {
-      const response = await axiosInstance.get("/auth/verify", {
+      const response = await axiosInstance.get("/auth/kakao/verify", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -47,13 +58,17 @@ const Profile = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      setMyInfo(response.data);
-      console.log(myInfo);
+      const data = response.data;
+      console.log(data);
+      setId(data.id);
+      setNickname(data.nickname);
+      setDescription(data.description);
+      setAge(data.age);
+      setMBTI(data.mbti);
     } catch (error) {
       console.error("Failed to load my information", error);
     }
   };
-
   const handleUpdate = async () => {
     try {
       const response = await axiosInstance.patch(
@@ -72,8 +87,10 @@ const Profile = () => {
         }
       );
       console.log("Success:", response.data);
+      setMessage("Information updated successfully!");
     } catch (error) {
       console.error("Error:", error);
+      setMessage("Failed to update information.");
     }
   };
 
@@ -85,30 +102,41 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      {verify && (
-        <Body>
-          <MyInfo>My Info</MyInfo>
+      <Body>
+        <MyInfo>My Info</MyInfo>
+        {verify && (
           <InfoContainer>
-            <MyImg alt="img" />
             <DetailBox>
-              <InfoDetail>닉네임</InfoDetail>
               <InfoDetail>
-                나이 <div>{myInfo.age}</div>
+                사용자 ID
+                <Input type="number" value={id} onChange={handleIDChange} />
+              </InfoDetail>
+              <InfoDetail>
+                닉네임
+                <Input type="text" value={id} onChange={handleNameChange} />
+              </InfoDetail>
+              <InfoDetail>
+                나이
                 <Input type="number" value={age} onChange={handleAgeChange} />
               </InfoDetail>
               <InfoDetail>
                 MBTI
                 <Input type="text" value={mbti} onChange={handleMBTIChange} />
               </InfoDetail>
+              <InfoDetail>
+                한 줄 소개
+                <Input
+                  type="text"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                />
+              </InfoDetail>
             </DetailBox>
           </InfoContainer>
-
-          <EditBtn onClick={handleUpdate}>내 정보 수정하기</EditBtn>
-        </Body>
-      )}
-
-      {/* post로 추가 정보 입력 */}
-      {/* patch로 정보 수정 */}
+        )}
+        <EditBtn onClick={handleUpdate}>내 정보 수정하기</EditBtn>
+        {message && <Message>{message}</Message>}
+      </Body>
     </>
   );
 };
@@ -120,7 +148,7 @@ const Body = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 79px;
+  top: 69px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -150,26 +178,22 @@ const InfoDetail = styled.span`
   color: white;
 `;
 
-const MyImg = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 100%;
-  margin: 0 20px;
-  border: none;
-  color: white;
-`;
-
 const InfoContainer = styled.div`
   display: flex;
   margin: 30px 0;
 `;
 
 const Input = styled.input`
-  width: 200px;
-  height: 30px;
+  display: flex;
+  text-align: center;
+  width: 150px;
+  height: 40px;
   margin: 0 20px;
+  padding: 10px;
   background-color: transparent;
+  color: white;
   border: none;
+  font-size: 16px;
   border-bottom: 2px solid white;
 `;
 
@@ -187,4 +211,10 @@ const EditBtn = styled.button`
   font-weight: 700;
   cursor: pointer;
   margin: 0 5px;
+`;
+
+const Message = styled.span`
+  color: white;
+  font-size: 16px;
+  margin-top: 10px;
 `;
