@@ -2,25 +2,26 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import login_button from "./../assets/login_button.png";
 import { axiosInstance } from "../api/api";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const KakaoLogin = () => {
   const Rest_api_key = process.env.REACT_APP_KAKAO_API_KEY; // REST API KEY
   const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT_URI; // Redirect URI
-  // Oauth 요청 URL
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&scope=openid`;
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-  }, []);
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
 
   const handleLogin = () => {
-    window.location.href = kakaoURL;
-    localStorage.setItem("isLoggedIn", "true");
-    setIsLoggedIn(true);
+    try {
+      window.location.href = kakaoURL;
+      localStorage.setItem("isLoggedIn", "true");
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   const handleLogout = async () => {
