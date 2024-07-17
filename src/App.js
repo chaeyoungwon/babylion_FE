@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/auth/kakao" element={<Auth />} />
           <Route path="/users" element={<Profile />} />
-          <Route path="/list" element={<List />} />
+          <Route path="/users/list" element={<List />} />
         </Routes>
       </BrowserRouter>
     </div>

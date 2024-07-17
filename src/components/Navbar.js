@@ -22,8 +22,10 @@ const Navbar = () => {
             My profile
           </ProfileBtn>
         </Link>
-        <Link to="/list">
-          <ListBtn active={isActive("/list") ? 1 : 0}>Profile list</ListBtn>
+        <Link to="/users/list">
+          <ListBtn active={isActive("/users/list") ? 1 : 0}>
+            Profile list
+          </ListBtn>
         </Link>
       </BtnList>
     </Bar>
